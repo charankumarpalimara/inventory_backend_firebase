@@ -1,0 +1,18 @@
+services:
+  - type: web
+    name: jewelry-inventory-api
+    env: node
+    plan: free
+    buildCommand: npm install
+    startCommand: npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 10000
+      - key: FIREBASE_PROJECT_ID
+        value: jewelery-7bc79
+      - key: FIREBASE_SERVICE_ACCOUNT_KEY
+        sync: false
+      - key: FRONTEND_URL
+        value: https://your-netlify-app.netlify.app
