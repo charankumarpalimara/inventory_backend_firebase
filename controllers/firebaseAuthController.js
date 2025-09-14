@@ -43,8 +43,25 @@ const getCurrentUser = async (req, res) => {
 const createUser = async (req, res) => {
   try {
     const { email, password, name, role = 'worker', phone = '' } = req.body;
+    const { role: currentUserRole } = req.user; // Get current user's role from middleware
     const auth = getAuth();
     const db = getFirestore();
+
+    // Validate role permissions
+    if (currentUserRole === 'admin' && (role === 'admin' || role === 'superadmin')) {
+      return res.status(403).json({
+        success: false,
+        message: 'You do not have permission to create admin or superadmin users. Only superadmins can create admin users.'
+      });
+    }
+
+    // Only superadmin can create superadmin users
+    if (role === 'superadmin' && currentUserRole !== 'superadmin') {
+      return res.status(403).json({
+        success: false,
+        message: 'Only superadmins can create superadmin users.'
+      });
+    }
 
     // Create user in Firebase Auth
     const userRecord = await auth.createUser({
@@ -88,8 +105,27 @@ const updateUser = async (req, res) => {
   try {
     const { id } = req.params;
     const { name, role, phone, email } = req.body;
+    const { role: currentUserRole } = req.user; // Get current user's role from middleware
     const auth = getAuth();
     const db = getFirestore();
+
+    // Validate role permissions for role updates
+    if (role) {
+      if (currentUserRole === 'admin' && (role === 'admin' || role === 'superadmin')) {
+        return res.status(403).json({
+          success: false,
+          message: 'You do not have permission to promote users to admin or superadmin. Only superadmins can promote users to admin.'
+        });
+      }
+
+      // Only superadmin can promote users to superadmin
+      if (role === 'superadmin' && currentUserRole !== 'superadmin') {
+        return res.status(403).json({
+          success: false,
+          message: 'Only superadmins can promote users to superadmin.'
+        });
+      }
+    }
 
     // Update user in Firebase Auth if email changed
     if (email) {
