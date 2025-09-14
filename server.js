@@ -18,13 +18,22 @@ const limiter = rateLimit({
 });
 app.use(limiter);
 
-// CORS configuration - Allow all origins for now
+// CORS configuration - Allow specific origins
 app.use(cors({
-  origin: true, // Allow all origins
+  origin: [
+    'http://localhost:3000',
+    'http://localhost:3001', 
+    'https://inventory-jewelry-frontend.netlify.app',
+    'https://inventory-jewelry-frontend.onrender.com'
+  ],
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With']
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Accept'],
+  optionsSuccessStatus: 200
 }));
+
+// Handle preflight requests
+app.options('*', cors());
 
 // Body parsing middleware
 app.use(express.json({ limit: '10mb' }));
