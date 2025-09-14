@@ -23,8 +23,8 @@ app.use(cors({
   origin: [
     'http://localhost:3000',
     'http://localhost:3001', 
-    'https://inventory-jewelry-frontend.netlify.app',
-    'https://inventory-jewelry-frontend.onrender.com'
+    'https://beautiful-valkyrie-421623.netlify.app',
+    '*'
   ],
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
