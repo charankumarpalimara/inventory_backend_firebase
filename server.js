@@ -43,6 +43,8 @@ app.use('/api/firebase', require('./routes/firebaseAuth')); // Firebase auth rou
 app.use('/api/jewelry', require('./routes/firebaseJewelry')); // Firebase jewelry routes
 app.use('/api/sales', require('./routes/firebaseSales')); // Firebase sales routes
 app.use('/api/customers', require('./routes/firebaseCustomers')); // Firebase customer routes
+app.use('/api/rates', require('./routes/firebaseRates')); // Firebase rates routes
+app.use('/api/analytics', require('./routes/firebaseAnalytics')); // Firebase analytics routes
 
 // Health check endpoint
 app.get('/api/health', (req, res) => {
